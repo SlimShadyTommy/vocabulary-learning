@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Learning Module</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .quiz-container {
+            margin: 20px 0;
+        }
+        .feedback {
+            margin-top: 10px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Vocabulary Learning Module</h1>
+
+        <!-- Pre-video Glossary Section -->
+        <div class="section" id="glossary-section">
+            <h2>Glossary</h2>
+            <p id="glossary-content">Loading glossary...</p>
+        </div>
+
+        <!-- Video Section (can embed educational videos here) -->
+        <div class="section" id="video-section">
+            <h2>Watch the Video</h2>
+            <video width="100%" controls>
+                <source src="your-video-url.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <!-- Interactive Quiz Section -->
+        <div class="section" id="quiz-section">
+            <h2>Interactive Quiz</h2>
+            <p>Answer the following questions based on the video:</p>
+            <div id="quiz-content">Loading quiz...</div>
+        </div>
+
+        <!-- Feedback Section -->
+        <div class="section" id="feedback-section">
+            <h2>Your Feedback</h2>
+            <p id="feedback-content">Submit your answers to get feedback!</p>
+        </div>
+    </div>
+
+    <script>
+        // Fetch glossary from AI (ChatGPT)
+        const glossarySection = document.getElementById('glossary-content');
+        const quizSection = document.getElementById('quiz-content');
+        const feedbackSection = document.getElementById('feedback-content');
+
+        async function fetchGlossary() {
+            const response = await fetch('https://api.openai.com/v1/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer YOUR_API_KEY'
+                },
+                body: JSON.stringify({
+                    model: "text-davinci-003",
+                    prompt: "Create a glossary with simple definitions for the words: enthusiasm, benefit, teamwork, victory, defeat.",
+                    max_tokens: 100
+                })
+            });
+            const data = await response.json();
+            glossarySection.innerText = data.choices[0].text;
+        }
+
+        // Fetch quiz questions
+        async function fetchQuiz() {
+            const response = await fetch('https://api.openai.com/v1/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer YOUR_API_KEY'
+                },
+                body: JSON.stringify({
+                    model: "text-davinci-003",
+                    prompt: "Create quiz questions related to vocabulary: enthusiasm, benefit, teamwork.",
+                    max_tokens: 100
+                })
+            });
+            const data = await response.json();
+            quizSection.innerText = data.choices[0].text;
+        }
+
+        // Simulate feedback based on user input (can be expanded to interactive form submission)
+        function provideFeedback() {
+            feedbackSection.innerText = "Good job! Review 'teamwork' again and continue learning!";
+        }
+
+        // Call functions on page load
+        window.onload = () => {
+            fetchGlossary();
+            fetchQuiz();
+        };
+    </script>
+</body>
+</html>
